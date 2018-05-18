@@ -4,6 +4,7 @@
 #include "Protocol/Packets/UserRegPacket.h"
 #include "Protocol/Packets/UserLogPacket.h"
 #include <QDebug>
+#include <QMessageBox>
 
 Core::Core():
     _isPending(true),
@@ -19,6 +20,8 @@ Core::Core():
             this, &Core::tryRegister);
     connect(_logFrame.ui->switchToReg, &QPushButton::clicked,
             this, &Core::switchToReg);
+    connect(_logFrame.ui->submitButton, &QPushButton::clicked,
+            this, &Core::tryLogin);
 
     _logFrame.show();
 
@@ -95,11 +98,35 @@ void Core::tryRegister()
     _connection->write(packet.dump());
     _connection->flush();
     _connection->blockSignals(true);
-    qDebug() << _connection->readAll();
+    _connection->waitForReadyRead();
+    if (_connection->readAll().data()[0] == char(1))
+    {
+        switchToLog();
+    }
+    else
+    {
+        QMessageBox::information(0, "Error", "Cannot create a user with such data");
+    }
     _connection->blockSignals(false);
 }
 
 void Core::tryLogin()
 {
-
+    UserLogPacket packet;
+    packet.username() = _logFrame.ui->lineEdit->text();
+    packet.pass() = _logFrame.ui->lineEdit_2->text();
+    _connection->write(packet.dump());
+    _connection->flush();
+    _connection->blockSignals(true);
+    _connection->waitForReadyRead();
+    if (_connection->readAll().data()[0] == char(1))
+    {
+        _mainWindow.show();
+        _logFrame.close();
+    }
+    else
+    {
+        QMessageBox::information(0, "Error", "Invlaid useraname/password");
+    }
+    _connection->blockSignals(false);
 }

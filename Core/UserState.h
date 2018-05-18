@@ -18,6 +18,6 @@ public:
 
     inline QList<QString>& activeMessages() { return _activeMessages; }
     inline QString* activeUsername() { return _activeUsername; }
-}
+};
 
 #endif

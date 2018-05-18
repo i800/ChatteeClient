@@ -1,4 +1,5 @@
 #include "UserState.h"
+#include <QDebug>
 
 UserState::UserState():
     _activeUsername(0)

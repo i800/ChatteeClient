@@ -32,7 +32,9 @@ SOURCES += \
     GUI/LogFrame.cpp \
     GUI/RegFrame.cpp \
     Core/Core.cpp \
-    Core/UserState.cpp
+    Core/UserState.cpp \
+    Protocol/Packets/UserGetChatPacket.cpp \
+    Protocol/Packets/UserGetBngsPacket.cpp
 
 HEADERS += \
         GUI/MainWindow.h \
@@ -46,7 +48,9 @@ HEADERS += \
     GUI/LogFrame.h \
     GUI/RegFrame.h \
     Core/Core.h \
-    Core/UserState.h
+    Core/UserState.h \
+    Protocol/Packets/UserGetChatPacket.h \
+    Protocol/Packets/UserGetBngsPacket.h
 
 FORMS += \
         GUI/MainWindow.ui \

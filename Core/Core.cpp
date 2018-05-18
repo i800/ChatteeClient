@@ -3,6 +3,8 @@
 #include "ui_RegFrame.h"
 #include "Protocol/Packets/UserRegPacket.h"
 #include "Protocol/Packets/UserLogPacket.h"
+#include "Protocol/Packets/UserGetChatPacket.h"
+#include "Protocol/Packets/UserGetBngsPacket.h"
 #include <QDebug>
 #include <QMessageBox>
 
@@ -52,9 +54,7 @@ void Core::start(const char* host, const quint16 port)
 
 void Core::test()
 {
-    UserLogPacket p;
-    p.username() = "u2";
-    p.pass() = "p1";
+    UserGetBngsPacket p;
     _connection->write(p.dump());
     _connection->flush();
 }
@@ -63,7 +63,14 @@ void Core::processMessage()
 {
     QTcpSocket* pSender = qobject_cast<QTcpSocket*>(sender());
     QByteArray message = pSender->readAll();
-    qDebug() << message;
+    QDataStream in(&message, QIODevice::ReadWrite);
+    QList<QString> list;
+    in >> list;
+
+    for (QString& s : list)
+    {
+        qDebug() << s;
+    }
 }
 
 void Core::reactOnDisruption()
@@ -123,6 +130,7 @@ void Core::tryLogin()
     {
         _mainWindow.show();
         _logFrame.close();
+        test();
     }
     else
     {

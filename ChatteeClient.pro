@@ -28,7 +28,8 @@ SOURCES += \
     Protocol/Packets/UserLogPacket.cpp \
     Protocol/Packets/UserRegPacket.cpp \
     Protocol/Packet.cpp \
-    Protocol/PacketHandler.cpp
+    Protocol/PacketHandler.cpp \
+    LogFrame.cpp
 
 HEADERS += \
         MainWindow.h \
@@ -38,7 +39,9 @@ HEADERS += \
     Protocol/Packets/UserLogPacket.h \
     Protocol/Packets/UserRegPacket.h \
     Protocol/Packet.h \
-    Protocol/PacketHandler.h
+    Protocol/PacketHandler.h \
+    LogFrame.h
 
 FORMS += \
-        MainWindow.ui
+        MainWindow.ui \
+    LogFrame.ui

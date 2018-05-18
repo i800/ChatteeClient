@@ -27,6 +27,8 @@ private slots:
     void reactOnDisruption();
     void switchToReg();
     void switchToLog();
+    void tryRegister();
+    void tryLogin();
     // Other reactions (...)
 };
 

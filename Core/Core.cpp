@@ -1,6 +1,7 @@
 #include "Core.h"
 #include "ui_LogFrame.h"
 #include "ui_RegFrame.h"
+#include "Protocol/Packets/UserRegPacket.h"
 #include "Protocol/Packets/UserLogPacket.h"
 #include <QDebug>
 
@@ -12,10 +13,12 @@ Core::Core():
     connect(_connection,
         QOverload<QAbstractSocket::SocketError>::of(&QAbstractSocket::error),
         this, &Core::reactOnDisruption);
-    connect(_logFrame.ui->pushButton_2, &QPushButton::clicked,
-            this, &Core::switchToReg);
-    connect(_logFrame.ui->pushButton_2, &QPushButton::clicked,
+    connect(_regFrame.ui->switchToLog, &QPushButton::clicked,
             this, &Core::switchToLog);
+    connect(_regFrame.ui->submitButton, &QPushButton::clicked,
+            this, &Core::tryRegister);
+    connect(_logFrame.ui->switchToReg, &QPushButton::clicked,
+            this, &Core::switchToReg);
 
     _logFrame.show();
 
@@ -79,4 +82,24 @@ void Core::switchToLog()
 {
     _logFrame.show();
     _regFrame.close();
+}
+
+void Core::tryRegister()
+{
+    // TODO: Validation.
+    UserRegPacket packet;
+    packet.username() = _regFrame.ui->lineEdit->text();
+    packet.bio() = _regFrame.ui->lineEdit_2->text();
+    packet.email() = _regFrame.ui->lineEdit_3->text();
+    packet.pass() = _regFrame.ui->lineEdit_4->text();
+    _connection->write(packet.dump());
+    _connection->flush();
+    _connection->blockSignals(true);
+    qDebug() << _connection->readAll();
+    _connection->blockSignals(false);
+}
+
+void Core::tryLogin()
+{
+
 }

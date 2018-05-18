@@ -79,6 +79,9 @@
    <property name="maxLength">
     <number>16</number>
    </property>
+   <property name="echoMode">
+    <enum>QLineEdit::Password</enum>
+   </property>
    <property name="placeholderText">
     <string>Password</string>
    </property>
@@ -95,11 +98,14 @@
    <property name="maxLength">
     <number>16</number>
    </property>
+   <property name="echoMode">
+    <enum>QLineEdit::Password</enum>
+   </property>
    <property name="placeholderText">
     <string>Re:password</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="submitButton">
    <property name="geometry">
     <rect>
      <x>110</x>
@@ -112,7 +118,7 @@
     <string>SUBMIT</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_2">
+  <widget class="QPushButton" name="switchToLog">
    <property name="geometry">
     <rect>
      <x>300</x>

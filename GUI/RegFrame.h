@@ -10,7 +10,7 @@ class RegFrame;
 class RegFrame : public QFrame
 {
     Q_OBJECT
-
+    friend class Core;
 public:
     explicit RegFrame(QWidget *parent = 0);
     ~RegFrame();

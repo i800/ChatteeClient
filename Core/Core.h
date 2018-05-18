@@ -25,6 +25,8 @@ public:
 private slots:
     void processMessage();
     void reactOnDisruption();
+    void switchToReg();
+    void switchToLog();
     // Other reactions (...)
 };
 

@@ -1,5 +1,6 @@
 #ifndef _CORE_
 #define _CORE_
+#include "UserState.h"
 #include "GUI/MainWindow.h"
 #include "GUI/LogFrame.h"
 #include "GUI/RegFrame.h"
@@ -12,6 +13,7 @@ private:
     bool _isPending;
     QString _session;
     QTcpSocket* _connection;
+    UserState _userState;
     MainWindow _mainWindow;
     LogFrame _logFrame;
     RegFrame _regFrame;

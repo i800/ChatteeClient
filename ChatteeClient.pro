@@ -31,7 +31,8 @@ SOURCES += \
     Protocol/PacketHandler.cpp \
     GUI/LogFrame.cpp \
     GUI/RegFrame.cpp \
-    Core/Core.cpp
+    Core/Core.cpp \
+    Core/UserState.cpp
 
 HEADERS += \
         GUI/MainWindow.h \
@@ -44,7 +45,8 @@ HEADERS += \
     Protocol/PacketHandler.h \
     GUI/LogFrame.h \
     GUI/RegFrame.h \
-    Core/Core.h
+    Core/Core.h \
+    Core/UserState.h
 
 FORMS += \
         GUI/MainWindow.ui \

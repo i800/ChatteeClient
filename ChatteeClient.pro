@@ -21,7 +21,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        MainWindow.cpp \
+        GUI/MainWindow.cpp \
     Client.cpp \
     Protocol/Packets/UserAddChatPacket.cpp \
     Protocol/Packets/UserAddMessPacket.cpp \
@@ -29,11 +29,11 @@ SOURCES += \
     Protocol/Packets/UserRegPacket.cpp \
     Protocol/Packet.cpp \
     Protocol/PacketHandler.cpp \
-    LogFrame.cpp \
-    RegFrame.cpp
+    GUI/LogFrame.cpp \
+    GUI/RegFrame.cpp
 
 HEADERS += \
-        MainWindow.h \
+        GUI/MainWindow.h \
     Client.h \
     Protocol/Packets/UserAddChatPacket.h \
     Protocol/Packets/UserAddMessPacket.h \
@@ -41,10 +41,10 @@ HEADERS += \
     Protocol/Packets/UserRegPacket.h \
     Protocol/Packet.h \
     Protocol/PacketHandler.h \
-    LogFrame.h \
-    RegFrame.h
+    GUI/LogFrame.h \
+    GUI/RegFrame.h
 
 FORMS += \
-        MainWindow.ui \
-    LogFrame.ui \
-    RegFrame.ui
+        GUI/MainWindow.ui \
+    GUI/LogFrame.ui \
+    GUI/RegFrame.ui

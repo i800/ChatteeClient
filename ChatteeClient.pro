@@ -4,7 +4,7 @@ QT += core websockets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = ChatteeClientInit
+TARGET = ChatteeClient
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
@@ -22,11 +22,23 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         MainWindow.cpp \
-    Client.cpp
+    Client.cpp \
+    Protocol/Packets/UserAddChatPacket.cpp \
+    Protocol/Packets/UserAddMessPacket.cpp \
+    Protocol/Packets/UserLogPacket.cpp \
+    Protocol/Packets/UserRegPacket.cpp \
+    Protocol/Packet.cpp \
+    Protocol/PacketHandler.cpp
 
 HEADERS += \
         MainWindow.h \
-    Client.h
+    Client.h \
+    Protocol/Packets/UserAddChatPacket.h \
+    Protocol/Packets/UserAddMessPacket.h \
+    Protocol/Packets/UserLogPacket.h \
+    Protocol/Packets/UserRegPacket.h \
+    Protocol/Packet.h \
+    Protocol/PacketHandler.h
 
 FORMS += \
         MainWindow.ui

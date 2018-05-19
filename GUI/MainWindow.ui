@@ -114,6 +114,9 @@
     <property name="horizontalScrollBarPolicy">
      <enum>Qt::ScrollBarAlwaysOff</enum>
     </property>
+    <property name="verticalScrollMode">
+     <enum>QAbstractItemView::ScrollPerPixel</enum>
+    </property>
     <property name="isWrapping" stdset="0">
      <bool>false</bool>
     </property>
@@ -129,6 +132,9 @@
       <width>241</width>
       <height>301</height>
      </rect>
+    </property>
+    <property name="verticalScrollMode">
+     <enum>QAbstractItemView::ScrollPerPixel</enum>
     </property>
    </widget>
   </widget>

@@ -25,6 +25,8 @@ Core::Core():
             this, &Core::switchToReg);
     connect(_logFrame.ui->submitButton, &QPushButton::clicked,
             this, &Core::tryLogin);
+    connect(_mainWindow.ui->listWidget_2, &QListWidget::currentItemChanged,
+            this, &Core::getMessages);
 
     _logFrame.show();
 
@@ -55,8 +57,7 @@ void Core::start(const char* host, const quint16 port)
 
 void Core::test()
 {
-    getMessages();
-    _connection->flush();
+    getBindings();
 }
 
 void Core::processMessage()
@@ -139,8 +140,25 @@ void Core::tryLogin()
     _connection->blockSignals(false);
 }
 
+void Core::getBindings()
+{
+    UserGetBngsPacket packet;
+    _connection->write(packet.dump());
+    _connection->flush();
+    _connection->blockSignals(true);
+    _connection->waitForReadyRead();
+
+    QByteArray arr = _connection->readAll();
+    QDataStream in(&arr, QIODevice::ReadWrite);
+    QList<QString> bindings;
+    in >> bindings;
+    _mainWindow.ui->listWidget_2->addItems(bindings);
+    _connection->blockSignals(false);
+}
+
 void Core::getMessages()
 {
+    // TODO: Remove Nina.
     UserGetChatPacket packet;
     packet.to() = "nn";
     _connection->write(packet.dump());

@@ -8,9 +8,11 @@
 #include "Protocol/Packets/UserGetBngsPacket.h"
 #include <QDebug>
 #include <QMessageBox>
+#include <cassert>
 
 Core::Core():
     _isPending(true),
+    _selectedUsername(0),
     _connection(new QTcpSocket(this))
 {
     // In case of failed connection.
@@ -25,8 +27,8 @@ Core::Core():
             this, &Core::switchToReg);
     connect(_logFrame.ui->submitButton, &QPushButton::clicked,
             this, &Core::tryLogin);
-    connect(_mainWindow.ui->listWidget_2, &QListWidget::currentItemChanged,
-            this, &Core::getMessages);
+    connect(_mainWindow.ui->listWidget_2, &QListWidget::itemSelectionChanged,
+            this, &Core::onUserStateChanged);
 
     _logFrame.show();
 
@@ -39,6 +41,7 @@ Core::~Core()
 {
     _connection->close();
     delete _connection;
+    delete _selectedUsername;
 
 #ifndef NDEBUG
     qDebug() << "Core deleted.";
@@ -158,9 +161,9 @@ void Core::getBindings()
 
 void Core::getMessages()
 {
-    // TODO: Remove Nina.
     UserGetChatPacket packet;
-    packet.to() = "nn";
+    assert(_selectedUsername);
+    packet.to() = *_selectedUsername;
     _connection->write(packet.dump());
     _connection->flush();
     _connection->blockSignals(true);
@@ -170,6 +173,15 @@ void Core::getMessages()
     QDataStream in(&arr, QIODevice::ReadWrite);
     QList<QString> messages;
     in >> messages;
+    _mainWindow.ui->listWidget->clear();
     _mainWindow.ui->listWidget->addItems(messages);
     _connection->blockSignals(false);
+}
+
+void Core::onUserStateChanged()
+{
+    delete _selectedUsername;
+    _selectedUsername = new QString(
+            _mainWindow.ui->listWidget_2->selectedItems().constFirst()->text());
+    getMessages();
 }

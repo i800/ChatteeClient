@@ -4,6 +4,7 @@
 #include "ui_MainWindow.h"
 #include "Protocol/Packets/UserRegPacket.h"
 #include "Protocol/Packets/UserLogPacket.h"
+#include "Protocol/Packets/UserAddMessPacket.h"
 #include "Protocol/Packets/UserGetChatPacket.h"
 #include "Protocol/Packets/UserGetBngsPacket.h"
 #include <QDebug>
@@ -29,7 +30,10 @@ Core::Core():
             this, &Core::tryLogin);
     connect(_mainWindow.ui->listWidget_2, &QListWidget::itemSelectionChanged,
             this, &Core::onUserStateChanged);
+    connect(_mainWindow.ui->sendButton, &QPushButton::clicked,
+            this, &Core::sendMessage);
 
+    _mainWindow.ui->sendButton->setEnabled(false);
     _logFrame.show();
 
 #ifndef NDEBUG
@@ -134,7 +138,7 @@ void Core::tryLogin()
     {
         _mainWindow.show();
         _logFrame.close();
-        test();
+        getBindings();
     }
     else
     {
@@ -180,8 +184,35 @@ void Core::getMessages()
 
 void Core::onUserStateChanged()
 {
+    _mainWindow.ui->sendButton->setEnabled(true);
     delete _selectedUsername;
     _selectedUsername = new QString(
             _mainWindow.ui->listWidget_2->selectedItems().constFirst()->text());
     getMessages();
+}
+
+void Core::sendMessage()
+{
+    QString message = _mainWindow.ui->textEdit->toPlainText();
+
+    UserAddMessPacket packet;
+    packet.text() = message;
+    assert(_selectedUsername);
+    packet.to() = *_selectedUsername;
+    _connection->write(packet.dump());
+    _connection->flush();
+    _connection->blockSignals(true);
+    _connection->waitForReadyRead();
+
+    if (_connection->readAll().data()[0] == char(1))
+    {
+        _mainWindow.ui->textEdit->clear();
+        _mainWindow.ui->listWidget->addItem(message);
+    }
+    else
+    {
+        QMessageBox::information(0, "Connection error", "Unable to send the message");
+    }
+
+    _connection->blockSignals(false);
 }

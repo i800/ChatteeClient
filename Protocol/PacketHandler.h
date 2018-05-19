@@ -18,7 +18,9 @@ public:
         USER_REG,
         USER_LOG,
         USER_ADD_CHAT,
-        USER_ADD_MESS
+        USER_ADD_MESS,
+        USER_GET_CHAT,
+        USER_GET_BNGS
     };
     PacketHandler();
     ~PacketHandler();

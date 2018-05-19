@@ -33,6 +33,7 @@ private slots:
     void getBindings();
     void getMessages();
     void onUserStateChanged();
+    void sendMessage();
     // Other reactions (...)
 };
 

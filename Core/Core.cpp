@@ -1,6 +1,7 @@
 #include "Core.h"
 #include "ui_LogFrame.h"
 #include "ui_RegFrame.h"
+#include "ui_MainWindow.h"
 #include "Protocol/Packets/UserRegPacket.h"
 #include "Protocol/Packets/UserLogPacket.h"
 #include "Protocol/Packets/UserGetChatPacket.h"
@@ -137,4 +138,16 @@ void Core::tryLogin()
         QMessageBox::information(0, "Error", "Invlaid useraname/password");
     }
     _connection->blockSignals(false);
+}
+
+void Core::getMessages()
+{
+    UserGetChatPacket packet;
+    _connection->write(packet.dump());
+    _connection->flush();
+    _connection->blockSignals(true);
+    _connection->waitForReadyRead();
+
+    //QList<QString> messages =
+    //_mainWindow.ui->listView->
 }

@@ -31,6 +31,7 @@ private slots:
     void switchToLog();
     void tryRegister();
     void tryLogin();
+    void getMessages();
     // Other reactions (...)
 };
 

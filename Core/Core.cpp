@@ -9,6 +9,7 @@
 #include "Protocol/Packets/UserGetBngsPacket.h"
 #include <QDebug>
 #include <QMessageBox>
+#include <QDateTime>
 #include <cassert>
 
 Core::Core():
@@ -46,6 +47,7 @@ Core::~Core()
 {
     _connection->close();
     delete _connection;
+    delete _receivedUsername;
     delete _selectedUsername;
 
 #ifndef NDEBUG
@@ -144,7 +146,8 @@ void Core::tryLogin()
     _connection->waitForReadyRead();
     if (_connection->readAll().data()[0] == char(1))
     {
-        _receivedUsername = _logFrame.ui->lineEdit->text();
+        delete _receivedUsername;
+        _receivedUsername = new QString(_logFrame.ui->lineEdit->text());
         _mainWindow.show();
         _logFrame.close();
         getBindings();
@@ -174,8 +177,9 @@ void Core::getBindings()
 
 void Core::getMessages()
 {
-    UserGetChatPacket packet;
     assert(_selectedUsername);
+
+    UserGetChatPacket packet;
     packet.to() = *_selectedUsername;
     _connection->write(packet.dump());
     _connection->flush();
@@ -202,11 +206,13 @@ void Core::onUserStateChanged()
 
 void Core::sendMessage()
 {
+    assert(_receivedUsername);
+    assert(_selectedUsername);
+
     QString message = _mainWindow.ui->textEdit->toPlainText();
 
     UserAddMessPacket packet;
     packet.text() = message;
-    assert(_selectedUsername);
     packet.to() = *_selectedUsername;
     _connection->write(packet.dump());
     _connection->flush();
@@ -216,7 +222,8 @@ void Core::sendMessage()
     if (_connection->readAll().data()[0] == char(1))
     {
         _mainWindow.ui->textEdit->clear();
-        _mainWindow.ui->listWidget->addItem(message);
+        _mainWindow.ui->listWidget->addItem((*_receivedUsername) + " ["
+            + QDateTime::currentDateTime().toString() + "]\n" + message);
     }
     else
     {

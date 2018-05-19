@@ -55,8 +55,7 @@ void Core::start(const char* host, const quint16 port)
 
 void Core::test()
 {
-    UserGetBngsPacket p;
-    _connection->write(p.dump());
+    getMessages();
     _connection->flush();
 }
 
@@ -143,11 +142,16 @@ void Core::tryLogin()
 void Core::getMessages()
 {
     UserGetChatPacket packet;
+    packet.to() = "nn";
     _connection->write(packet.dump());
     _connection->flush();
     _connection->blockSignals(true);
     _connection->waitForReadyRead();
 
-    //QList<QString> messages =
-    //_mainWindow.ui->listView->
+    QByteArray arr = _connection->readAll();
+    QDataStream in(&arr, QIODevice::ReadWrite);
+    QList<QString> messages;
+    in >> messages;
+    _mainWindow.ui->listWidget->addItems(messages);
+    _connection->blockSignals(false);
 }

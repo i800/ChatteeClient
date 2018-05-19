@@ -72,21 +72,16 @@ void Core::test()
 
 void Core::processMessage()
 {
-    QTcpSocket* pSender = qobject_cast<QTcpSocket*>(sender());
-    QByteArray message = pSender->readAll();
-    QDataStream in(&message, QIODevice::ReadWrite);
-    QList<QString> list;
-    in >> list;
-
-    for (QString& s : list)
-    {
-        qDebug() << s;
-    }
+    qobject_cast<QTcpSocket*>(sender())->readAll();
 }
 
 void Core::reactOnDisruption()
 {
-    // emit disruption();
+    QMessageBox::information(0, "Connection error",
+                             "Sorry, the connection is lost\nTry login later");
+    _logFrame.close();
+    _regFrame.close();
+    _mainWindow.close();
 
 #ifndef NDEBUG
     qDebug() << "Connection disrupted.";

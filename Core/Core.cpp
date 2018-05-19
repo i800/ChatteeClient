@@ -13,6 +13,7 @@
 
 Core::Core():
     _isPending(true),
+    _receivedUsername(0),
     _selectedUsername(0),
     _connection(new QTcpSocket(this))
 {
@@ -94,12 +95,19 @@ void Core::switchToReg()
 {
     _regFrame.show();
     _logFrame.close();
+    _logFrame.ui->lineEdit->clear();
+    _logFrame.ui->lineEdit_2->clear();
 }
 
 void Core::switchToLog()
 {
     _logFrame.show();
     _regFrame.close();
+    _regFrame.ui->lineEdit->clear();
+    _regFrame.ui->lineEdit_2->clear();
+    _regFrame.ui->lineEdit_3->clear();
+    _regFrame.ui->lineEdit_4->clear();
+    _regFrame.ui->lineEdit_5->clear();
 }
 
 void Core::tryRegister()
@@ -136,6 +144,7 @@ void Core::tryLogin()
     _connection->waitForReadyRead();
     if (_connection->readAll().data()[0] == char(1))
     {
+        _receivedUsername = _logFrame.ui->lineEdit->text();
         _mainWindow.show();
         _logFrame.close();
         getBindings();

@@ -12,6 +12,7 @@ private:
     bool _isPending;
     QString _session;
     QTcpSocket* _connection;
+    QString* _receivedUsername;
     QString* _selectedUsername;
     MainWindow _mainWindow;
     LogFrame _logFrame;

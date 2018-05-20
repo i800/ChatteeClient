@@ -8,6 +8,7 @@ LogFrame::LogFrame(QWidget *parent) :
     ui(new Ui::LogFrame)
 {
     ui->setupUi(this);
+    setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
 }
 
 LogFrame::~LogFrame()

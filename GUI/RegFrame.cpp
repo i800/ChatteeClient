@@ -6,6 +6,7 @@ RegFrame::RegFrame(QWidget *parent) :
     ui(new Ui::RegFrame)
 {
     ui->setupUi(this);
+    setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
 }
 
 RegFrame::~RegFrame()
